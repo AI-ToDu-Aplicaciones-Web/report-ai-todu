@@ -1,6 +1,6 @@
 UNIVERSIDAD PERUANA DE CIENCIAS APLICADAS
 
-![][image1]
+![Logo de la Universidad Peruana de Ciencias Aplicadas](./assets/upc.png)
 
 Aplicaciones Web (8088)
 
@@ -57,9 +57,10 @@ A continuación, se explicará todo acerca del desarrollo de actividades para la
 
 Para la entrega de la TB1, este es el análisis de colaboración que presenta el número de contribuciones hechas en el repositorio del informe.
 
-![][image2]
+![](./assets/part.png)
 
-![][image3]
+![](./assets/part1.png)
+
 
 &nbsp;
 
@@ -277,12 +278,12 @@ Nos dedicamos a desarrollar soluciones de software B2B (*Business-to-Business*) 
 
 &nbsp;
 
-| Carlos Alberto Bernal Torres Código: U202420071 Carrera: Ingeniería de Software Perfil: Estudiante con sólidos conocimientos en el desarrollo frontend y backend. Aporta al equipo habilidades en la implementación de arquitecturas orientadas a dominio (DDD). | ![][image4] |
+| Carlos Alberto Bernal Torres Código: U202420071 Carrera: Ingeniería de Software Perfil: Estudiante con sólidos conocimientos en el desarrollo frontend y backend. Aporta al equipo habilidades en la implementación de arquitecturas orientadas a dominio (DDD). | ![](./assets/Bernal.jpg) |
 | :---- | :---- |
-| **Luis Carlos Chui Kcomt Código:** U20241i327 **Carrera:** Ingeniería de Software **Perfil:** Estudiante responsable con conocimientos en Python, C++, HTML. Aporto calidad y buen rendimiento en trabajos en equipo así como buen ambiente y compromiso. | **![][image5]** |
+| **Luis Carlos Chui Kcomt Código:** U20241i327 **Carrera:** Ingeniería de Software **Perfil:** Estudiante responsable con conocimientos en Python, C++, HTML. Aporto calidad y buen rendimiento en trabajos en equipo así como buen ambiente y compromiso. | ![](./assets/Chui.jpg) |
 | Jose Maria Huayra Moreyra Código: U202326295 Carrera: Ingeniería de Software Perfil: Estudiante con conocimientos basicos y medios en C++, basico en python y poco en Javascript, conocimiento previo del frontend en html 5\. | ![][image6] |
 | Alex Rodrigo Lacuta Lima Código: U20241g396 Carrera: Ingeniería de Software Perfil: Estudiante con conocimientos básicos de programación. He usado C++ a nivel inicial. Poco conocimiento de JavaScript. Conozco HTML5 de forma básica. Con muchas ganas de aprender y ganar experiencia. | ![][image7] |
-| **Ethan Raul Yi Torrejon** Código: U202313434 Carrera: Ingeniería de Software Perfil: Estudiante con solidos conocimientos manejo y optimización de bases de datos relacional y no relacional, además con un sólido conocimiento en proyectos Scrum y Domain Driven Design. | **![][image8]** |
+| **Ethan Raul Yi Torrejon** Código: U202313434 Carrera: Ingeniería de Software Perfil: Estudiante con solidos conocimientos manejo y optimización de bases de datos relacional y no relacional, además con un sólido conocimiento en proyectos Scrum y Domain Driven Design. | ![](./assets/Yi.jpg) |
 
 &nbsp;
 
