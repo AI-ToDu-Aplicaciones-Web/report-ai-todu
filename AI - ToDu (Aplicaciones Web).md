@@ -912,3 +912,258 @@ Tabla de Estimación y Priorización:
 &nbsp;
 
 # 
+
+# **Capítulo IV: Product Design**
+
+En este capítulo detallamos las directrices visuales, arquitectónicas y de experiencia de usuario que guiarán el desarrollo de AI-ToDu. El diseño de nuestro producto se fundamenta en heurísticas de usabilidad estandarizadas, garantizando una curva de aprendizaje mínima y una alta eficiencia operativa para las MYPES.
+
+## **4.1. Style Guidelines.**
+
+Para mantener la consistencia visual y técnica en todo el ecosistema (Landing Page y Web Application), hemos definido un *Design System* centralizado, tomando como base principal los principios de **Material Design** (integrado técnicamente vía Angular Material).
+
+### **4.1.1. General Style Guidelines.**
+
+Nuestras decisiones de diseño a nivel general se sustentan en la heurística de "Consistencia y estándares", asegurando que los usuarios no tengan que preguntarse si diferentes palabras, situaciones o acciones significan lo mismo.
+
+* **Brand & Tono de Comunicación:** Al ser una herramienta B2B que maneja datos logísticos y financieros, nuestra comunicación se rige por las siguientes cuatro dimensiones:
+  * **Serio (no divertido):** Nos enfocamos en la productividad y en resolver problemas de negocio sin distracciones innecesarias.
+  * **Formal (no casual):** Transmitimos profesionalismo y seguridad, vital para ganarnos la confianza de dueños y gerentes.
+  * **Respetuoso (no irreverente):** Valoramos el tiempo y el esfuerzo de nuestros usuarios operativos.
+  * **Sereno (no entusiasta):** Mantenemos una interfaz limpia que no abrume al usuario, especialmente durante tareas estresantes como el cuadre de inventario.
+* **Typography:** Hemos seleccionado la familia tipográfica **Inter** para los encabezados y **Roboto** para las tablas de datos e interfaz general. Estas fuentes sans-serif ofrecen una legibilidad altísima en pantallas de cualquier tamaño y densidad de píxeles, reduciendo la carga cognitiva.
+* Colors:
+  * *Primary (Corporate Navy \- \#0F172A):* Un azul oscuro que denota estabilidad, seguridad de la información y profesionalismo corporativo.
+  * *Accent (Teal \- \#0D9488):* Un verde azulado vibrante utilizado estrictamente para *Call-to-Actions* (CTAs) y botones principales.
+  * *Semantic Colors:* Rojo (\#DC2626) para alertas de quiebre de stock, Ambar (\#F59E0B) para revisiones pendientes, y Verde (\#16A34A) para confirmaciones de éxito (basado en la heurística de "Visibilidad del estado del sistema").
+
+### **4.1.2. Web Style Guidelines.**
+
+Para las interfaces web responsivas, adoptaremos un sistema de grillas fluidas de 12 columnas.
+
+* **Componentes:** Uso intensivo de tarjetas (*Cards*) para agrupar información lógicamente y *Data Tables* con paginación para manejar altos volúmenes de registros.
+* **Interacción:** Todos los elementos interactivos (botones, enlaces) tendrán un estado *hover* y *focus* claramente definido, cumpliendo con las heurísticas de prevención de errores y accesibilidad.
+
+## **4.2. Information Architecture.**
+
+La arquitectura de información de AI-ToDu está diseñada para que visitantes y usuarios operativos encuentren lo que necesitan con el menor número de clics posible, reduciendo la fricción.
+
+### **4.2.1. Organization Systems.**
+
+Aplicaremos diferentes esquemas de organización dependiendo de la vista y la intención del usuario:
+
+* **Organización Jerárquica:** Utilizada en el menú de navegación lateral (*Sidenav*). Los módulos de alto nivel (Inventario, Ventas, Facturación) se despliegan para revelar submódulos (Ingresos, Salidas, Reportes).
+* **Organización Matricial:** Aplicada en los módulos del núcleo operativo (ej. *WarehouseModule*), donde los usuarios podrán organizar las tablas de inventario cruzando variables como SKU, fecha de ingreso y estado de conservación.
+* **Organización Secuencial:** Empleada en flujos de trabajo críticos, como el *Shipment Manifest* (Manifiesto de Despacho), guiando al operario paso a paso (Selección de ruta \-\> Asignación de mercadería \-\> Confirmación) para prevenir errores.
+
+### **4.2.2. Labeling Systems.**
+
+Para asegurar la claridad, nuestras etiquetas reflejan fielmente el **Ubiquitous Language** del dominio logístico, evitando jergas técnicas de software.
+
+* En lugar de usar "Crear un nuevo ítem", usaremos la etiqueta **"Registrar Entrada"**.
+* En lugar de "Módulo de envíos", usaremos **"Despacho y Trazabilidad"**.
+* Los botones de confirmación tendrán etiquetas descriptivas sobre la acción exacta (ej. **"Aprobar Manifiesto"** en lugar del genérico "Aceptar").
+
+### **4.2.3. SEO Tags and Meta Tags**
+
+Para el Landing Page (optimización de adquisición de clientes) y la Web Application, configuraremos los siguientes metadatos en el encabezado HTML:
+
+\<\!-- Landing Page SEO Tags \--\>
+
+\<title\>AI-ToDu | Software de Gestión de Inventario y Ventas para MYPES\</title\>
+
+\<meta name="description" content="AI-ToDu es la plataforma SaaS B2B que centraliza la logística, inventario y facturación de tu negocio. Diseñado para MYPES, restaurantes y distribuidoras."\>
+
+\<meta name="keywords" content="software inventario MYPE, ERP para pequeñas empresas, control de almacén, facturación electrónica, logística B2B Perú"\>
+
+\<meta name="author" content="IA-INNOVATION"\>
+
+\<\!-- Web Application App Tags \--\>
+
+\<title\>Dashboard | AI-ToDu App\</title\>
+
+\<meta name="robots" content="noindex, nofollow"\> \<\!-- Evita que los motores de búsqueda indexen datos privados del SaaS \--\>
+
+### **4.2.4. Searching Systems.**
+
+Dada la cantidad de mercadería que maneja una MYPE, el sistema de búsqueda es fundamental:
+
+* **Búsqueda Global (Global Search):** Ubicada en el *Top App Bar*, permitirá a los usuarios buscar un producto rápidamente escaneando el código de barras (SKU) o escribiendo su nombre.
+* **Búsqueda Facetada (Filtros):** En las tablas de datos, los usuarios podrán aplicar filtros simultáneos combinados (ej. Mostrar solo "Productos Perecibles" con "Stock Mínimo").
+* **Presentación de resultados:** Los resultados se mostrarán en tiempo real (búsqueda reactiva) resaltando el término coincidente. En caso de no encontrar resultados, se mostrará un mensaje claro ("No se encontraron artículos con ese SKU") y un botón para sugerir la creación del producto.
+
+### **4.2.5. Navigation Systems.**
+
+El recorrido del usuario estará soportado por elementos de navegación predecibles:
+
+* **Top App Bar (Landing Page):** Navegación horizontal anclada (*sticky*) que contiene anclas hacia las secciones de "Propuesta de Valor", "Precios" y un *Call to Action* persistente para "Iniciar Sesión" o "Prueba Gratuita".
+* **Side Navigation Drawer (Web Application):** El menú lateral izquierdo será el sistema principal de navegación dentro de la plataforma, colapsable para dejar más espacio útil en pantalla al manejar tablas de inventario.
+* **Breadcrumbs (Migas de pan):** Para procesos profundos (ej. Almacén \> Ingresos \> Lote \#1042), permitiendo al usuario saber exactamente dónde está y retroceder con un solo clic.
+
+## **4.3. Landing Page UI Design.**
+
+En esta sección presentamos el diseño de interfaz de usuario para el Landing Page de AI-ToDu. La propuesta visual traduce nuestras decisiones de Arquitectura de Información y Guías de Estilo en una interfaz orientada a la conversión B2B. El diseño se enfoca en transmitir confianza institucional y guiar al visitante (dueños de negocios) hacia el registro o prueba del sistema, asegurando una experiencia inclusiva y adaptable a cualquier dispositivo móvil o de escritorio.
+
+### **4.3.1. Landing Page Wireframe.**
+
+Nuestros wireframes para Desktop y Mobile Web Browser establecen la jerarquía visual de la página sin distracciones estéticas. Hemos priorizado la heurística de "Diseño estético y minimalista", asegurando que el *Hero Section* contenga una propuesta de valor clara y un único *Call to Action* (CTA) prominente. La estructura modular permite apilar fácilmente el contenido en la vista móvil.
+
+![](./assets/11.png) Wireframe Landing Page Desktop
+
+![](./assets/12.png)![](./assets/13.png) Wireframe Landing Page Mobile
+
+### **4.3.2. Landing Page Mock-up.**
+
+Partiendo de los wireframes, los mock-ups integran nuestro *Design System*. Utilizamos la paleta de colores corporativa (Navy y Teal) para resaltar los botones de acción sobre fondos limpios, cumpliendo con los estándares de contraste (WCAG) para un diseño inclusivo. La tipografía *Inter* proporciona un aspecto moderno y altamente legible.
+
+![](./assets/14.png) MockUp Landing Page Desktop
+
+![](./assets/15.png)![](./assets/16.png)MockUp Landing Page Mobile
+
+Link de Figma: [AI-ToDu | Figma Apps Web](https://www.figma.com/design/tPmzGrVXLTbnfOCBikVKwB/AI-ToDu-%7C-Figma-Apps-Web?node-id=0-1&t=tuGwtparpfqb4gNj-1)
+
+## **4.4. Web Applications UX/UI Design.**
+
+El diseño de la aplicación web (el software SaaS en sí) está construido bajo una estricta modularidad utilizando como referencia los patrones de **Angular Material**. El enfoque principal es la eficiencia del usuario operativo (almaceneros y dueños), minimizando la carga de memoria (reconocer en lugar de recordar) y previniendo errores en el ingreso de datos logísticos.
+
+### **4.4.1. Web Applications Wireframes.**
+
+Los wireframes de la aplicación definen la disposición del espacio de trabajo. Se ha implementado un Sidenav colapsable en la izquierda para la navegación principal y una amplia área central para las Data Tables (tablas de datos) de inventario. Esta disposición maximiza el espacio útil en pantalla, vital para revisar largos listados de SKUs.
+
+\[Insertar imagen: Wireframes de las principales vistas de la Web App \- Dashboard e Inventario\]
+
+### **4.4.2. Web Applications Wireflow Diagrams.**
+
+Para mapear los flujos de tareas transversales, elaboramos un Wireflow extendido que cubre desde el primer contacto del usuario con la plataforma hasta la acción core del negocio. El objetivo (*User goal*) de este flujo es: **Ingresar o registrarse en AI-ToDu, llegar al Dashboard, y registrar un ingreso de mercadería al almacén.**
+
+El diagrama ilustra paso a paso cómo la vista cambia en respuesta a la interacción del usuario, guiando el proceso lógicamente desde la autenticación hasta la actualización del estado del sistema:
+
+![](./assets/23.png)
+
+**Explicación del flujo:**
+
+1. **Login / Registro:** El visitante llega a la pantalla de autenticación. Si ya tiene cuenta, ingresa sus credenciales y hace clic en "Iniciar Sesión"; si es nuevo, completa el formulario de registro (nombre del negocio, email y contraseña) y hace clic en "Crear Cuenta". Ambos caminos son intercambiables mediante los enlaces cruzados ("¿No tienes cuenta?" / "¿Ya tienes cuenta?"), cumpliendo con la heurística de libertad y control del usuario.
+2. **Dashboard:** Tras autenticarse, el sistema lo dirige al Dashboard gerencial, que muestra de inmediato los indicadores clave del negocio (ingresos, mermas detectadas y rentabilidad neta), cumpliendo con la heurística de visibilidad del estado del sistema desde el primer momento.
+3. **Navegación a Inventario:** Desde el Sidenav, el usuario hace clic en "Inventario" para acceder al módulo operativo donde se gestionan los productos.
+4. **Registrar Entrada (Modal):** En la tabla de inventario, el usuario hace clic en "Registrar Entrada", lo que despliega un modal (*Dialog*) con el formulario de ingreso (SKU, nombre del producto, cantidad y categoría), sin sacarlo de contexto de la tabla principal.
+5. **Confirmación y actualización:** Al completar el formulario y hacer clic en "Confirmar", la tabla principal se actualiza mostrando el nuevo registro resaltado, cumpliendo con la visibilidad del estado del sistema y confirmando al usuario que la acción se ejecutó correctamente.
+
+### **4.4.3. Web Applications Mock-ups.**
+
+Los mock-ups de la plataforma SaaS aplican rigurosamente nuestra guía de estilos. Las alertas y estados de inventario utilizan *Semantic Colors* (rojo para quiebres de stock, verde para transacciones exitosas). Los componentes de Angular Material (como *Cards*, *Mat-Tables* y *Mat-Buttons*) brindan un aspecto limpio y profesional, reduciendo el estrés cognitivo durante jornadas laborales largas.
+
+\[Insertar imagen: Mock-ups en alta fidelidad de la Web App (Dashboard, Tablas y Formularios)\]
+
+### **4.4.4. Web Applications User Flow Diagrams.**
+
+A diferencia del wireflow, este User Flow Diagram detalla los caminos alternativos y la validación de errores. El objetivo (*User goal*) abordado es: **Procesar un Manifiesto de Despacho logístico**.
+
+\[Insertar imagen: User Flow Diagram con happy paths y unhappy paths\] *Explicación de flujos y condiciones:* El *happy path* muestra una asignación exitosa de ruta y confirmación de despacho. Sin embargo, el *unhappy path* detalla qué ocurre si el sistema detecta que el usuario no tiene los roles necesarios o si un campo obligatorio del formulario está vacío (mostrando alertas preventivas claras en pantalla en lugar de fallar silenciosamente).
+
+## **4.5. Web Applications Prototyping.**
+
+Nuestro prototipo navegable consolida las decisiones de Arquitectura de Información e interacciones. Hemos configurado estados reactivos (*hover* en botones, selección de filas en tablas) para brindar retroalimentación inmediata al operario. La navegación es predecible, utilizando *breadcrumbs* (migas de pan) para asegurar que el usuario pueda retroceder de una tarea profunda (ej. Detalles de Lote) sin usar el botón de retroceso del navegador, evitando pérdidas de información no guardada.
+
+\[Insertar imagen: Captura de pantalla representativa del Prototipo interactivo en Figma\] *Enlace al video demostrativo de los flujos de interacción:* \[URL de Microsoft Stream del video de simulación\]
+
+## **4.6. Domain-Driven Software Architecture.**
+
+A partir del entendimiento general del negocio logrado en el *Big Picture Event Storming*, hemos profundizado en la arquitectura del software aplicando *Domain-Driven Design* (DDD). En esta sección presentamos la transición de los eventos de negocio hacia artefactos de software concretos (Comandos, Agregados y Modelos de Lectura) y su representación estructural utilizando el Modelo C4, lo que nos permite visualizar la solución desde un nivel de abstracción alto (Contexto) hasta el nivel técnico (Componentes).
+
+### **4.6.1. Design-Level Event Storming.**
+
+Para esta fase, el equipo llevó a cabo una sesión de *Design-Level Event Storming* con el objetivo de refinar los eventos descubiertos previamente y agruparlos lógicamente. Durante este proceso, identificamos los *Commands* (acciones del usuario, representadas en notas azules) que disparan los eventos, los *Aggregates* (entidades de dominio, en notas amarillas) que validan las reglas de negocio, y las *Queries/Read Models* (notas verdes) que los usuarios necesitan ver en pantalla.
+
+Como resultado de la organización, definimos cuatro *Bounded Contexts* (Contextos Delimitados) principales para la plataforma SaaS:
+
+1. **Identity and Access Management (IAM):** Gestiona la autenticación, autorización y perfiles de los empleados de la MYPE.
+2. **Warehouse and Inventory Management:** El *Core Domain*, encargado del control de stock, movimientos y métricas de almacenamiento.
+3. **Logistics and Dispatch:** Gestiona las salidas de mercadería, manifiestos de ruta y trazabilidad.
+4. **Billing and Transactions:** Administra las ventas, pagos y emisión de comprobantes.
+
+![](./assets/24.png)
+
+### **4.6.2. Software Architecture Context Diagram.**
+
+El Diagrama de Contexto (Nivel 1 del Modelo C4) ilustra a AI-ToDu en el centro de su entorno operativo, mostrando las interacciones de alto nivel con los actores del sistema y los sistemas externos (terceros) obligatorios para la operación.
+
+Explicación del diagrama:
+
+* **Usuarios (Actors):** Identificamos al *Business Owner* (quien consume reportes y métricas) y al *Warehouse Operator* (quien ingresa datos de inventario y despachos).
+* **Sistema Central:** "AI-ToDu SaaS", que centraliza la operación.
+* **Sistemas Externos:** Para brindar una solución completa en Perú, el sistema se integra con la **SUNAT API** (para la validación y emisión de comprobantes de pago electrónicos obligatorios) y con un servicio de **Email Gateway** (ej. SendGrid o AWS SES) para el envío de alertas de stock mínimo a los dueños.
+
+![](./assets/25.png)
+
+### **4.6.3. Software Architecture Container Diagrams.**
+
+El Diagrama de Contenedores (Nivel 2 del Modelo C4) descompone el sistema central en unidades de despliegue independientes, reflejando nuestras decisiones tecnológicas y de infraestructura.
+
+Explicación del diagrama:
+
+* **Landing Page (Static Web Site):** Desarrollado en HTML5, CSS3 y JavaScript, alojado de forma independiente (ej. GitHub Pages o Vercel) para la captación de clientes.
+* **Web Application (Single-Page Application):** Desarrollada con el framework Angular y TypeScript. Se comunica con el backend exclusivamente mediante llamadas HTTP asíncronas.
+* **RESTful API (Backend Application):** Desarrollada en C\# utilizando el framework Spring Boot. Este contenedor expone los *Endpoints* consumidos por la aplicación frontend y orquesta la lógica de negocio de los *Bounded Contexts*.
+* **Database (Relational RDBMS):** Base de datos principal (ej. PostgreSQL o MySQL) que persiste el estado de los *Aggregates*.
+
+![](./assets/26.png)
+
+### **4.6.4. Software Architecture Components Diagrams.**
+
+El Diagrama de Componentes (Nivel 3 del Modelo C4) hace "zoom" dentro del contenedor del **RESTful API** para detallar sus bloques estructurales internos y la aplicación del diseño modular.
+
+*Explicación del diagrama:* Cada *Bounded Context* se implementa como un módulo dentro de Spring Boot. Por ejemplo, el módulo de Inventario (*Warehouse*) muestra cómo las solicitudes HTTP entrantes son recibidas por el InventoryController, delegadas al InventoryService (donde reside la lógica de negocio) y finalmente cómo el InventoryRepository interactúa con la base de datos a través de Spring Data JPA. También se visualiza el componente SecurityFilter encargado de validar los tokens de acceso de cada petición (IAM).
+
+(Insertar imagen: Diagrama de Componentes (Nivel 3\) mostrando Controladores, Servicios y Repositorios en Spring Boot )
+
+* sku, dimensionalWeight) tienen modificadores de acceso private para evitar 4.7. Software Object-Oriented Design.
+
+En esta sección detallamos cómo los conceptos teóricos descubiertos en el Event Storming y estructurados en nuestra arquitectura (DDD) se traducen en artefactos de código concretos mediante el Diseño Orientado a Objetos (POO). El objetivo principal de nuestro diseño es proteger los "Invariantes" (reglas de negocio) encapsulando el estado de los objetos y exponiendo únicamente comportamientos (métodos) con significado para el dominio.
+
+![](./assets/27.png)![](./assets/28.png)![](./assets/29.png)![](./assets/30.png) 4.7.1. Class Diagrams.
+
+A continuación, presentamos los Diagramas de Clases UML para los Bounded Contexts principales de nuestro backend en Spring Boot (Java), mapeando las interfaces definidas en nuestro frontend (TypeScript) hacia clases de dominio robustas.
+
+* Warehouse Context (Gestión de Inventario):
+  * La clase InventoryItem actúa como el Aggregate Root. Sus atributos (ej. modificaciones externas directas.
+  * En lugar de simples "setters", la clase expone métodos de dominio como updateConservationStatus(ConservationStatus newStatus) que validan las reglas de negocio antes de mutar el estado.
+  * Utiliza la enumeración ConservationStatus.
+* **Logistics Context (Despacho y Trazabilidad):**
+  * La clase ShipmentManifest es el **Aggregate Root**.
+  * Contiene a IoTTelemetry como un **Value Object** (Objeto de Valor). En POO, esto significa que IoTTelemetry es una clase inmutable (solo lectura tras su creación) y carece de un ID propio, ya que su identidad depende totalmente del ShipmentManifest al que pertenece.
+  * Expone métodos como addWaypoint(String waypoint) y dispatchFleet().
+* **Billing Context (Facturación):**
+  * La clase CommercialTransaction es el **Aggregate Root**.
+  * Para mantener el desacoplamiento estricto que exige DDD, esta clase almacena una referencia lógica (linkedManifestId de tipo String/UUID) en lugar de tener una relación de objeto directa con ShipmentManifest. Esto permite que el módulo de Facturación evolucione independientemente del de Logística.
+  * Expone métodos como calculateTaxes() que encapsulan la lógica impositiva.
+
+&nbsp;
+
+![](./assets/31.png)
+
+![](./assets/32.png)
+
+![](./assets/33.png)
+
+![](./assets/34.png)
+
+## **4.8. Database Design.**
+
+El diseño de nuestra base de datos relacional (SQL Server) sigue la misma filosofía de separación por *Bounded Contexts*. Para evitar el acoplamiento a nivel de base de datos (el antipatrón "Big Ball of Mud"), cada contexto delimitado es dueño de sus propias tablas, y las referencias cruzadas se manejan de forma blanda (mediante identificadores alfanuméricos) en lugar de *Foreign Keys* estrictas a nivel de motor de base de datos.
+
+### **4.8.1. Database Diagrams.**
+
+Hemos utilizado Spring Data JPA para el mapeo objeto-relacional (ORM), lo que se refleja en nuestros Diagramas de Base de Datos (ERD):
+
+* **Esquema WAREHOUSE:**
+  * Tabla inventory\_items: La llave primaria (id) es un UUID. Los estados del Enum (conservation\_status) se persisten como cadenas de texto (VARCHAR) para mayor legibilidad y mantenibilidad.
+* **Esquema LOGISTICS:**
+  * Tabla shipment\_manifests: Almacena la data central del despacho.
+  * Debido a que IoTTelemetry es un *Value Object*, no tiene su propia tabla. En su lugar, hemos aplicado el patrón @Embedded de JPA, por lo que sus atributos (latitude, longitude, temperature\_celsius) se "aplanan" y se guardan como columnas directamente dentro de la tabla shipment\_manifests.
+  * Tabla manifest\_waypoints (1:N): Tabla dependiente para almacenar la lista de strings de las rutas.
+* **Esquema BILLING:**
+  * Tabla commercial\_transactions: Almacena el subtotal, impuestos y total de la venta.
+  * Incluye la columna linked\_manifest\_id (VARCHAR), la cual actúa como una referencia lógica al despacho, respetando la autonomía del esquema de ventas sin generar bloqueos en cascada en la base de datos.
+
+![](./assets/35.png)
+
+&nbsp;
