@@ -543,3 +543,156 @@ Análisis del Segmento 2: Usuarios Finales (Operarios/Logística)
 * **Marcas e Influencias:** Consumen marcas accesibles, prácticas y de estilo de vida rápido (Samsung, Adidas).
 * **Dolores (Pain Points):** El 100% considera que los reportes manuales (cuadernos/papeles) son su mayor frustración y pérdida de tiempo. El 66% admite que la complejidad para registrar mermas o buscar productos genera los descuadres de inventario.
 * **Expectativas (Gains):** El 100% exige una herramienta que reduzca su carga de trabajo (simplicidad extrema). El 66% solicitó explícitamente funcionalidades como "buscadores ágiles" e interfaces con muy pocos clics.
+
+## **2.3. Needfinding**
+
+En esta fase de Needfinding, hemos traducido los datos crudos y estadísticos obtenidos en nuestras entrevistas en artefactos de empatía y mapeo. Esto nos permite visualizar a nuestros usuarios objetivo, entender su día a día y alinear las funcionalidades de AI-ToDu con sus necesidades reales antes de escribir una sola línea de código.
+
+A continuación, presentamos nuestros User Personas, el User Task Matrix, los User Journey Maps y los Empathy Maps.
+
+### **2.3.1. User Personas.**
+
+Con base en el análisis de las 6 entrevistas, hemos construido dos arquetipos (User Personas) que representan fielmente a nuestros dos segmentos objetivo. Hemos considerado características demográficas, personalidad, canales digitales, frustraciones y metas. Estos perfiles serán el centro de todas las decisiones de diseño y arquitectura de información de AI-ToDu.
+
+User Persona 1: Carlos Mendoza \- El "Dueño Estresado" (Segmento 1: Tomadores de Decisión)
+
+![](./assets/1.png)
+
+**User Persona 2: Miguel Rojas \- El "Almacenero Frustrado" (Segmento 2: Usuarios Finales)**![][image13]
+
+![](./assets/3.png)
+
+### **2.3.2. User Task Matrix.**
+
+A continuación, presentamos la matriz de tareas de los usuarios. Aquí evaluamos las tareas clave que nuestros User Personas (Carlos y Miguel) realizan actualmente en el contexto de la gestión de la cadena de suministro de sus negocios, independientemente de la existencia de AI-ToDu.
+
+Esto nos permite identificar qué procesos son los más críticos y frecuentes para cada perfil.
+
+&nbsp;
+
+| Tareas (User Tasks) | User Persona 1: Carlos Mendoza (Dueño/Admin) |  | User Persona 2: Miguel Rojas (Almacenero) |  |
+| ----- | ----- | ----- | ----- | ----- |
+|  | Frecuencia | Importancia | Frecuencia | Importancia |
+| 1\. Registrar ingresos físicos de mercadería | Baja | Media | Alta | Alta |
+| 2\. Registrar salidas/despachos de mercadería | Baja | Media | Alta | Alta |
+| 3\. Buscar productos físicamente en estantes | Rara vez | Baja | Alta | Alta |
+| 4\. Calcular mermas / productos dañados | Media | Alta | Media | Media |
+| 5\. Elaborar cuadre financiero/inventario | Media (Mensual) | Alta | Baja (Lo sufre a fin de mes) | Alta |
+| 6\. Autorizar compras a proveedores | Alta | Alta | Baja (Solo sugiere) | Baja |
+| 7\. Revisar estado general del negocio | Alta (Diario) | Alta | Baja | Baja |
+
+Análisis del User Task Matrix:
+
+Al analizar la matriz, resaltan coincidencias y diferencias marcadas que guiarán la arquitectura de AI-ToDu:
+
+* **Diferencias operativas:** Las tareas de mayor frecuencia para Miguel (registrar ingresos, salidas y buscar productos físicamente) son casi nulas para Carlos. Esto valida nuestra premisa de que la interfaz móvil del almacenero debe estar hiper-optimizada para la rapidez (pocos clics), ya que lo hace decenas de veces al día. Por el contrario, la tarea más frecuente de Carlos es "Revisar el estado general", lo que justifica la creación de un Dashboard gerencial como pantalla de inicio para su rol.
+* **Coincidencias en dolores:** Ambos perfiles coinciden en la alta importancia de "Elaborar el cuadre de inventario" y "Calcular mermas". Sin embargo, Miguel lo vive como una carga operativa pesada a fin de mes, mientras que Carlos lo vive como una métrica crítica de pérdida de dinero. AI-ToDu deberá automatizar esta tarea para aliviar la carga de Miguel y darle tranquilidad inmediata a Carlos.
+
+### **2.3.3. User Journey Mapping.**
+
+En esta sección presentamos los User Journey Maps en su versión **"As-Is"** (situación actual) para nuestros dos User Personas. El objetivo de estos diagramas es ilustrar el viaje de extremo a extremo (end-to-end) que experimentan actualmente al intentar gestionar la logística y rentabilidad de sus negocios sin la ayuda de AI-ToDu. Esto nos permite mapear sus puntos de dolor exactos y oportunidades de mejora a lo largo del tiempo.
+
+User Journey Map 1: Carlos Mendoza (El "Dueño Estresado")
+
+* **Escenario:** El cierre de mes. Carlos intenta hacer el cuadre financiero de su negocio basándose en los reportes manuales de su equipo.
+* **Captura UXPressia:**  
+  ![](./assets/6.png)
+* Fases del Journey (Para UXPressia):
+  1. **Recepción de datos (Expectativa):** Carlos pide por WhatsApp el reporte mensual a su almacenero. Siente ansiedad esperando que los datos cuadren.
+  2. **Revisión del Excel (Frustración):** Abre el archivo y nota fórmulas rotas y datos incompletos. Su nivel de estrés sube porque no entiende la información.
+  3. **Identificación de mermas (Enojo):** Va físicamente al almacén y descubre productos vencidos o "desaparecidos" que no están en el Excel. Siente que pierde dinero a ciegas.
+  4. **Toma de decisiones (Resignación):** Trata de calcular la rentabilidad al "ojo". Pierde todo su fin de semana cuadrando papeles.
+* **Oportunidad para AI-ToDu:** Automatizar la consolidación de datos. Ofrecer un Dashboard que muestre la rentabilidad sin tener que pedirle el archivo a nadie.
+
+User Journey Map 2: Miguel Rojas (El "Almacenero Frustrado")
+
+* **Escenario:** Un día pico de recepción de mercadería y despacho múltiple.
+* **Captura UXPressia:**&nbsp;  
+  ![](./assets/7.png)
+* Fases del Journey (Para UXPressia):
+  1. **Llegada del camión (Caos):** Llega mucha mercadería junta. Miguel anota rápido en un cuaderno con lápiz porque el chofer está apurado.
+  2. **Despacho y Búsqueda (Estrés físico):** Le piden un insumo urgente para producción. Pierde 20 minutos buscando en los estantes porque no sabe exactamente dónde lo dejó.
+  3. **Pérdida de documentos (Miedo):** Se da cuenta que perdió una guía de remisión de la mañana. Teme que le descuenten el dinero de su sueldo.
+  4. **Fin de turno (Agotamiento):** Todos se van, pero él debe quedarse 2 horas extra transcribiendo lo del cuaderno al Excel para mandárselo a Carlos.
+* **Oportunidad para AI-ToDu:** Reemplazar el cuaderno por una app móvil con lector de códigos o registro de 2 clics. Buscador inteligente de ubicaciones en el almacén.
+
+&nbsp;
+
+&nbsp;
+
+### **2.3.4. Empathy Mapping.**
+
+Para profundizar en la psique de nuestros usuarios, realizamos una sesión de análisis basada en las observaciones de las entrevistas. Colocamos a cada User Persona al centro y respondimos preguntas clave sobre su entorno, sus acciones y sus emociones. A continuación, presentamos los Mapas de Empatía resultantes.
+
+(Nota: Las siguientes capturas fueron generadas en UXPressia).
+
+Empathy Map 1: Carlos Mendoza (Tomador de Decisión)
+
+* **Captura UXPressia:**&nbsp;  
+  ![](./assets/8.png)  
+  &nbsp;
+* **¿Con quién empatizamos y qué necesita hacer?:** Carlos, 45 años, dueño de negocio. Necesita conocer la rentabilidad exacta y evitar robos/mermas.
+* **¿Qué ve?:** Ve a la competencia modernizándose. Ve papeles desordenados y almacenes repletos de cosas que no sabe si se venden o no.
+* **¿Qué escucha?:** "Jefe, no cuadra el inventario", "Se malogró esta mercadería", "El contador necesita las facturas urgentes".
+* **¿Qué dice y hace?:** "Necesito que me pasen ese Excel ahora mismo". Va físicamente al almacén a hacer inspecciones sorpresa.
+* **¿Qué piensa y siente?:** "Estoy perdiendo plata por culpa del desorden". Siente mucho estrés, desconfianza hacia su personal y miedo a quebrar.
+* **Pains (Dolores):** Descuadres a fin de mes, mermas inexplicables, robos de mercadería, estrés continuo.
+* **Gains (Beneficios esperados):** Tranquilidad mental, control total desde su celular, saber su margen de ganancia real en 5 segundos.
+
+Empathy Map 2: Miguel Rojas (Usuario Final)
+
+* **Captura UXPressia:**&nbsp;  
+  ![](./assets/9.png)
+* **¿Con quién empatizamos y qué necesita hacer?:** Miguel, 28 años, almacenero. Necesita registrar el ingreso y salida de mercadería lo más rápido posible.
+* **¿Qué ve?:** Ve rumas de cajas, post-its pegados por todos lados, la letra ilegible de sus compañeros de turno.
+* **¿Qué escucha?:** "¡Despacha rápido que el camión se va\!", "¿Dónde pusiste las cajas de tomates?", "¡Ese Excel está mal cuadrado\!".
+* **¿Qué dice y hace?:** "Espérate que lo anoto en este cartón y luego lo paso". Corre por todo el almacén buscando cosas.
+* **¿Qué piensa y siente?:** "Mi trabajo no es valorado, me exigen rapidez pero me dan un cuaderno viejo". Siente agotamiento físico y frustración tecnológica.
+* **Pains (Dolores):** Transcribir datos al final del día (doble trabajo), que le echen la culpa de las pérdidas, quedarse horas extra sin paga.
+* **Gains (Beneficios esperados):** Un sistema tipo "TikTok" de fácil de usar, no usar más lapicero, poder irse a su casa a la hora de salida.
+
+## **2.4. Big Picture Event Storming.**
+
+En esta sección presentamos los resultados de nuestra sesión colaborativa de Big Picture Event Storming. El objetivo de esta actividad fue mapear visualmente el ecosistema completo del negocio logístico y comercial de las MYPES para identificar los procesos clave, los cuellos de botella y las oportunidades de mejora tecnológica.
+
+**Resumen del Proceso:** El equipo se reunió de forma virtual utilizando FigJam como herramienta de pizarra infinita. Durante una sesión intensiva de 2 horas, exploramos la línea de tiempo completa del negocio (de izquierda a derecha), desde que la mercadería es recibida de los proveedores hasta que es facturada y entregada al cliente final.
+
+Utilizamos la siguiente convención de colores:
+
+* **Post-its Naranjas:** Eventos de Dominio (*Domain Events*), redactados siempre en tiempo pasado.
+* **Post-its Amarillos:** Usuarios/Actores (Ej. Dueño, Almacenero, Vendedor).
+* **Post-its Rosados:** Sistemas Externos (Ej. SUNAT, Proveedor GPS).
+* **Post-its Lilas:** Políticas o Reglas de negocio.
+
+Fases y Eventos Clave Identificados (Para dibujar en FigJam/Miro):
+
+1. Fase de Abastecimiento e Inventario:
+  * *Eventos (Naranja):* MerchandiseReceived (Mercadería Recibida), StockInspected (Stock Inspeccionado), InventoryUpdated (Inventario Actualizado), MerchandiseQuarantined (Mercadería en Cuarentena), LowStockAlertTriggered (Alerta de Stock Mínimo Disparada).
+2. Fase Comercial y Facturación:
+  * *Eventos (Naranja):* PurchaseOrderPlaced (Orden de Compra Realizada), CommercialTransactionCreated (Transacción Comercial Creada), PaymentProcessed (Pago Procesado), InvoiceGenerated (Factura Generada).
+3. Fase de Despacho y Logística:
+  * *Eventos (Naranja):* ShipmentManifestCreated (Manifiesto de Despacho Creado), MerchandiseDispatched (Mercadería Despachada), TelemetryUpdated (Telemetría Actualizada), DeliveryConfirmed (Entrega Confirmada).
+
+**Captura del Tablero:**&nbsp;
+
+![](./assets/10.png)
+
+&nbsp;
+
+&nbsp;
+
+**Análisis y Oportunidades:** Al visualizar el flujo completo, el equipo notó que la mayor acumulación de "dolores" y cuellos de botella (representados con post-its rojos de riesgo) ocurría en la transición entre la Fase 1 y la Fase 2\. La información de lo que hay en el almacén no fluye en tiempo real hacia ventas, generando un vacío de información. AI-ToDu actuará como el puente digital que sincronice los eventos InventoryUpdated directamente con PurchaseOrderPlaced.
+
+## **2.5. Ubiquitous Language.**
+
+Para asegurar una comunicación sin ambigüedades entre los expertos del negocio, los usuarios y el equipo de desarrollo, hemos construido nuestro **Lenguaje Ubicuo (Ubiquitous Language)**. Este glosario define los términos centrales del dominio de la logística, almacén y ventas, estandarizando su uso en todos los artefactos, desde los requerimientos hasta el código fuente de AI-ToDu.
+
+* **Inventory Item (Artículo de Inventario):** Producto físico o insumo que se encuentra almacenado dentro del negocio, listo para ser despachado, vendido o utilizado en producción.
+* **SKU \- Stock Keeping Unit (Código de Referencia):** Identificador alfanumérico único asignado a un artículo para rastrear su disponibilidad exacta en el almacén.
+* **Shipment Manifest (Manifiesto de Despacho):** Documento logístico consolidado que agrupa los artículos que saldrán del almacén, detallando el estado actual del envío y las ubicaciones a visitar.
+* **Waypoint (Punto de Ruta):** Ubicación geográfica específica (como el origen, destino o paradas intermedias) que conforma la hoja de ruta de un despacho.
+* **Commercial Transaction (Transacción Comercial):** El registro oficial de una venta. Consolida los artículos adquiridos por el cliente, los impuestos aplicados (IGV) y el estado del pago.
+* **Quarantine (Cuarentena):** Estado temporal asignado a un artículo de inventario que presenta daños o dudas sobre su calidad. Mientras esté en cuarentena, no puede ser vendido ni despachado.
+* **Dimensional Weight (Peso Volumétrico):** Medida logística calculada en base al volumen de un paquete (largo, ancho y alto) que determina el espacio físico real que ocupará en el estante o en el vehículo de transporte.
+* **Telemetry (Telemetría):** Conjunto de datos medibles (como latitud, longitud o temperatura) asociados a un manifiesto de despacho, especialmente relevante cuando se transporta mercadería perecible o de alto valor.
+* **Stock Out (Quiebre de Stock):** Situación crítica que ocurre cuando se intenta vender o utilizar un artículo cuya cantidad física en el almacén ha llegado a cero.
