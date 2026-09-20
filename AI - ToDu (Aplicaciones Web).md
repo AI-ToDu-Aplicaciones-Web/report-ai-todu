@@ -1166,4 +1166,222 @@ Hemos utilizado Spring Data JPA para el mapeo objeto-relacional (ORM), lo que se
 
 ![](./assets/35.png)
 
+# **Capítulo V: Product Implementation, Validation & Deployment**
+
+En este capítulo detallamos el proceso técnico de implementación, comprobación, despliegue y validación de los productos que componen el ecosistema de AI-ToDu: nuestro *Landing Page* (sitio web estático), las *Web Applications* (Frontend) y los *RESTful Web Services* (Backend). Todo el ciclo de vida está soportado por metodologías ágiles (Scrum), integración continua y un enfoque estricto en la calidad del código.
+
+## **5.1. Software Configuration Management**
+
+Para mantener la consistencia, trazabilidad y orden durante todo el ciclo de vida del desarrollo, el equipo de IA-INNOVATION ha establecido convenciones estrictas sobre las herramientas a utilizar y la gestión de nuestro código fuente.
+
+### **5.1.1. Software Development Environment Configuration**
+
+Para garantizar un flujo de trabajo colaborativo y eficiente, todos los miembros del equipo han configurado sus entornos de trabajo utilizando el siguiente stack de herramientas y plataformas, respetando las restricciones tecnológicas del proyecto:
+
+| Herramienta / Producto | Propósito en el Proyecto | Enlace de Referencia / Descarga |
+| ----- | ----- | ----- |
+| **Jira** | *Project Management:* Gestión del Product Backlog, Sprint Backlog, User Stories y Work-Items mediante tableros Kanban. | https://www.atlassian.com/software/jira |
+| **Discord & WhatsApp**&nbsp; | *Team Collaboration:* realización de reuniones, ceremonias Scrum y coordinación entre los integrantes del equipo. | https://discord.com/ |
+| **UXPressia** | *Requirements Management & UX:* Elaboración de User Personas, Empathy Maps, Journey Maps e Impact Maps. | https://uxpressia.com/ |
+| **Figma** | *Product UX/UI Design:* Creación de Wireframes, Mockups y prototipos interactivos para la Landing Page y Web Application. | https://www.figma.com/ |
+| **WebStorm**&nbsp; | *Software Development:* Desarrollo del Frontend y Landing Page utilizando HTML5, CSS3, JavaScript/TypeScript y el framework utilizado en el proyecto. | https://www.jetbrains.com/webstorm/ |
+| **JetBrains Rider**&nbsp; | *Software Development:* Desarrollo del Backend utilizando C\# y ASP.NET Core.&nbsp; | https://www.jetbrains.com/rider/ |
+| **HTML5 / CSS3 / JavaScript**&nbsp; | Tecnologías base utilizadas para la implementación de la Landing Page. | https://developer.mozilla.org/ |
+| **Vue.js / PrimeVue**&nbsp; | Desarrollo de la Frontend Web Application mediante componentes reutilizables e interfaz basada en Material Design. | https://vuejs.org/&nbsp; |
+| **ASP.NET Core / C\#**&nbsp; | Desarrollo del RESTful API y la lógica de negocio del Backend.&nbsp; | https://dotnet.microsoft.com/&nbsp; |
+| **Git/GitHub** | *Source Code Management:* Alojamiento de repositorios en la nube, control de versiones colaborativo y Code Reviews. (SaaS) | https://github.com/ |
+| **GitHub Pages** | *Software Deployment:* publicación de la Landing Page mediante el repositorio de GitHub. | https://pages.github.com/ |
+
+### **5.1.2. Source Code Management**
+
+Como sistema de control de versiones centralizado utilizamos **Git**, y nuestros repositorios están alojados bajo una organización pública en **GitHub**. La estructura de repositorios es la siguiente:
+
+* **Landing Page Repository:** `[https://github.com/AI-ToDu-Aplicaciones-Web/ai-todu-landing-page]`
+* **Web Applications (Frontend) Repository:** `[https://github.com/AI-ToDu-Aplicaciones-Web/ai-todu-frontend-app]`
+* **RESTful Web Services (Backend) Repository:** `[https://github.com/AI-ToDu-Aplicaciones-Web/ai-todu-backend-api]` *(Nota: Este repositorio incluye los archivos y paquetes de pruebas unitarias y de integración del API).*
+
+**GitFlow Workflow**
+
+Para gestionar la evolución de nuestro código de manera ordenada sin interrumpir el trabajo de otros colaboradores, aplicamos el modelo **GitFlow**. Nuestra política de ramas (*branches*) se define de la siguiente manera:
+
+* **`main` (Rama Principal):** Contiene el código en estado de producción. Cada *commit* en esta rama representa un *Release* estable que ha pasado por pruebas y validaciones.
+* **`develop` (Rama de Integración):** Es la rama base para el desarrollo. Aquí se integran todos los nuevos *features* antes de pasar a producción.
+* **`feature/<nombre-funcionalidad>`:** Ramas creadas a partir de `develop` para desarrollar historias de usuario individuales (ej. `feature/warehouse-dashboard`). Una vez completado, se realiza un *Pull Request* (PR) hacia `develop`.
+* **`release/v<x.y.z>`:** Ramas temporales creadas a partir de `develop` para preparar un despliegue de Sprint. Permite corregir *bugs* de última hora sin bloquear nuevas funcionalidades. Se fusiona en `main` y en `develop`.
+* **`hotfix/<nombre-error>`:** Ramas de emergencia creadas a partir de `main` para corregir errores críticos en producción.
+
+**Semantic Versioning (SemVer 2.0.0)**
+
+El etiquetado de nuestros *Releases* en la rama `main` sigue el estándar de versionado semántico **MAJOR.MINOR.PATCH** (ej. `v1.2.4`):
+
+* **MAJOR:** Cambios drásticos o arquitectónicos que rompen la compatibilidad hacia atrás (ej. de un monolito a microservicios).
+* **MINOR:** Inclusión de nuevas funcionalidades que mantienen la compatibilidad hacia atrás (ej. añadir un nuevo módulo al Dashboard).
+* **PATCH:** Corrección de *bugs* o refactorizaciones menores que no alteran el comportamiento esperado de la API o la aplicación.
+
+**Conventional Commits**
+
+Para mantener un historial de repositorios legible y generar notas de lanzamiento automáticas, todo el equipo utiliza la especificación *Conventional Commits* en los mensajes de sus subidas de código. El formato obligatorio es: `<tipo>[ámbito opcional]: <descripción en tiempo presente y minúsculas>`
+
+Los tipos permitidos son:
+
+* `feat:` Una nueva característica o funcionalidad.
+* `fix:` Una corrección de error (*bug*).
+* `docs:` Cambios únicamente en la documentación (ej. `README.md`).
+* `style:` Cambios que no afectan el significado del código (espacios, formato, punto y coma faltante).
+* `refactor:` Un cambio de código que ni corrige un error ni añade una característica (optimización).
+* `test:` Adición o corrección de pruebas existentes.
+* `chore:` Actualizaciones de tareas de construcción, configuración de paquetes, etc. (ej. `chore: update angular material to v17`).
+
+### &nbsp;**5.1.3. Source Code Style Guide & Conventions**
+
+Para asegurar la calidad, legibilidad y mantenibilidad del código base a lo largo de todo el ciclo de desarrollo, el equipo se adhiere estrictamente a convenciones estándares reconocidas por la industria, tal como lo exige el marco de nuestro proyecto.
+
+A continuación, detallamos las guías de estilo adoptadas para cada tecnología, integrando nuestra arquitectura basada en Domain-Driven Design (DDD).
+
+**A. Backend & RESTful API (C\# / Spring Boot)**
+
+Para el desarrollo de la lógica del lado del servidor, aplicamos la **Google Java Style Guide**.
+
+* **Convenciones:** Uso estricto de *camelCase* para variables y métodos, y *PascalCase* para Clases e Interfaces.
+* **Formato:** Indentación de 2 espacios (evitando tabs), longitud máxima de línea de 100 caracteres y la convención de un solo bloque de declaración de variables por línea.
+* **Arquitectura:** Seguimos las directrices de **Spring Boot Features**, organizando los paquetes por *Bounded Context* (ej. `com.aitodu.warehouse`, `com.aitodu.billing`) y separando lógicamente los *Controllers*, *Services* y *Repositories*.
+
+**B. Frontend Web Applications (TypeScript & Angular)**
+
+Para el desarrollo frontend, la base fundamental es la **Google TypeScript Style Guide** en conjunto con la **Angular Coding Style Guide** oficial.
+
+**Aplicación de TypeScript Basics y Tipado Estricto:** En el desarrollo frontend de AI-ToDu, aplicamos los principios de Domain-Driven Design (DDD). Para garantizar la integridad de nuestros *Aggregates* en la capa del cliente, utilizamos el tipado estático y robusto que ofrece TypeScript. Esto previene errores en tiempo de ejecución y asegura que los datos compartidos entre los módulos mantengan contratos estrictos.
+
+Definimos las estructuras base de nuestros agregados principales utilizando:
+
+* **Tipos de Estado (Enums):** *PascalCase* para los nombres de enum (ej. `ShipmentStatus`) y *UPPER\_SNAKE\_CASE* para sus valores (ej. `IN_TRANSIT`).
+* **Value Objects y Composición:** Interfaces como `IoTTelemetry` inyectadas dentro de agregados mayores.
+* **Interfaces Estrictas:** Permiten a Angular conocer exactamente qué propiedades están disponibles en los componentes visuales, utilizando propiedades opcionales (`?`) donde el hardware IoT aún no ha sido asignado al flujo.
+
+**Arquitectura Angular (Feature Modules):** El proyecto se divide en las siguientes capas fundamentales para facilitar el *Lazy Loading*:
+
+1. **CoreModule (Núcleo):** Contiene los servicios singleton, interceptores HTTP y *guards* de seguridad.
+2. **SharedModule (Compartido):** Alberga componentes visuales reutilizables, *pipes* y la importación de Angular Material.
+3. **Feature Modules:** Módulos de dominio aislados y cargados perezosamente (ej. `WarehouseModule`, `LogisticsModule`, `BillingModule`).
+
+**C. Landing Page y Markup (HTML5 & CSS3)**
+
+Para la estructura y estilos estáticos, aplicamos la **Google HTML/CSS Style Guide** y las **HTML Style Guide and Coding Conventions** (W3Schools).
+
+* **HTML:** Uso exclusivo de letras minúsculas para los nombres de elementos y atributos, valores de atributos siempre entre comillas, y omisión de la barra final en etiquetas vacías (ej. `<br>` en lugar de `<br />`).
+* **CSS:** Uso de notación *kebab-case* para las clases y selectores de ID, indentación de 2 espacios y ordenamiento lógico de propiedades (posicionamiento, modelo de caja, tipografía, efectos visuales).
+* **Gherkin Conventions:** Para la redacción de especificaciones técnicas y criterios de aceptación, utilizamos `Given-When-Then` estandarizado, asegurando *Readable Specifications*.
+
+### **5.1.4. Software Deployment Configuration**
+
+Para garantizar que los productos desarrollados estén disponibles continuamente, hemos configurado un proceso de despliegue automatizado estructurado en las siguientes plataformas:
+
+1. **Landing Page (Sitio Web Estático):**
+  * **Plataforma:** Vercel o Netlify.
+  * **Proceso:** El repositorio de GitHub está vinculado directamente a la plataforma. Cada *Merge* a la rama `main` dispara automáticamente un *webhook* que construye los archivos HTML/CSS/JS estáticos y los despliega globalmente a través de un CDN, asegurando tiempos de carga mínimos.
+2. **Frontend Web Applications (Angular):**
+  * **Plataforma:** Vercel o Firebase Hosting.
+  * **Proceso:** Vinculado al repositorio frontend. Al fusionar un *Pull Request* hacia la rama de producción (`main`), el motor de CI/CD interno ejecuta el comando `ng build --configuration production`, optimizando el *bundle* (Ahead-of-Time compilation, Tree Shaking) y desplegando los artefactos generados en un entorno seguro y con soporte nativo para *routing* de Single Page Applications (SPA).
+3. **RESTful Web Services & Database (Backend):**
+  * **Plataforma:** Render o Railway (Plataforma como Servicio \- PaaS).
+  * **Proceso:** Para nuestra API en Spring Boot, el entorno de despliegue clona el código fuente desde GitHub y utiliza Maven o Gradle para compilar el proyecto en un archivo `.jar`. Una vez compilado, se empaqueta y ejecuta en un contenedor. La base de datos (PostgreSQL/MySQL) está alojada de forma administrada en la misma nube, y la API se conecta a ella mediante variables de entorno encriptadas, garantizando la seguridad de las credenciales de producción.
+
+## **5.2. Landing Page, Services & Applications Implementation**
+
+En esta sección detallamos el progreso interactivo y colaborativo del equipo a lo largo del ciclo de vida del proyecto. Para organizar nuestro flujo de valor, utilizamos la metodología Scrum, dividiendo el esfuerzo en Sprints.
+
+### **5.2.1. Sprint 1**
+
+Este primer Sprint se centró en la configuración de la infraestructura base, repositorios, y en el diseño e implementación de la versión inicial del Landing Page (sitio web estático) para empezar a atraer tráfico y presentar nuestra propuesta de valor al mercado.
+
+#### **5.2.1.1. Sprint Planning 1**
+
+El equipo se reunió para definir los objetivos iniciales del proyecto y comprometer las primeras historias de usuario de nuestro Product Backlog.
+
 &nbsp;
+
+| Sprint \# | Sprint 1 |
+| ----- | ----- |
+| **Sprint Planning Background** | During the Sprint Planning meeting, the team reviewed the Product Backlog and prioritized the core User Stories needed to launch the MVP of AI-ToDu. This includes introducing the value proposition via the Landing Page (US01), initial account setup and authentication (US06, US07), as well as foundational inventory and sales management features (US02, US03, US11). The team estimated the effort for each story using Planning Poker, defined responsibilities, and aligned on the Sprint Goal. |
+| **Date** | 2026-09-01 |
+| **Time** | 16:00 |
+| **Location** | Microsoft Teams (Reunión Virtual) |
+| **Prepared By** | Bernal Torres, Carlos Alberto (Team Leader) |
+| **Attendees (to planning meeting)** | Bernal Torres, Carlos Alberto Chui Kcomt, Luis Carlos Huayra Moreyra, Jose Maria Lacuta Lima, Alex Rodrigo Yi Torrejon, Ethan Raul |
+| **Sprint 0 Review Summary** | N/A (First sprint of the project). The team reviewed the initial project requirements, clarified the product scope, and assigned the first User Stories to the team members.&nbsp; |
+| **Sprint 0 Retrospective Summary** | N/A. Since this was the first sprint, there was no previous Sprint Retrospective. Initial agreements regarding communication, task distribution, and collaboration were established during the Sprint Planning meeting.&nbsp; |
+| **Sprint Goal & User Stories** | **Sprint Goal:** Deploy the AI-ToDu Landing Page and deliver the initial core features of authentication, inventory entry, sales recording, and stock updating. **User Stories:** **US01 – Visualización de planes (2 SP):** Como visitante de una MYPE, quiero visualizar los planes disponibles de AI-ToDu, para conocer las opciones y funcionalidades antes de registrarme. **US02 – Registro de mercancía (3 SP):** Como encargado de almacén, quiero registrar mercancías y productos en el sistema, para mantener un inventario digital actualizado. **US03 – Creación de venta (5 SP):** Como vendedor, quiero registrar una venta, para procesar las operaciones comerciales de manera rápida y ordenada. **US06 – Registro de usuarios (3 SP):** Como usuario de una MYPE, quiero registrarme en AI-ToDu, para crear una cuenta y comenzar a utilizar la plataforma. **US07 – Inicio de sesión (2 SP):** Como usuario registrado, quiero iniciar sesión, para acceder de forma segura a las funcionalidades de AI-ToDu. **US11 – Actualización de stock (5 SP):** Como jefe de almacén/operario, quiero actualizar las existencias de los productos, para mantener sincronizado el inventario físico con el sistema. |
+| **Sprint 1 Goal** | **Our focus is on** launching the AI-ToDu Landing Page alongside core authentication and inventory/sales MVP features. **We believe it delivers** a clear understanding of our B2B value proposition and immediate operational value to MYPE users. **This will be confirmed when** users can view pricing plans, register/login, add inventory items, update stock levels, and record sales transactions successfully. |
+| **Sprint 1 Velocity** | 20 Story Points |
+| **Sum of Story Points** | 20 Story Points |
+
+#### **5.2.1.2. Aspect Leaders and Collaborators**
+
+Para mantener una comunicación efectiva y asegurar la calidad de cada entregable, definimos una matriz de Liderazgo y Colaboración (LACX) para los aspectos clave del Sprint 1\.
+
+| Team Member (Last Name, First Name) | GitHub Username | Aspect: Landing Page UI/UX Leader (L) / Collaborator (C) | Aspect: Env & Repo Setup Leader (L) / Collaborator (C) | Aspect: Documentation Leader (L) / Collaborator (C) |
+| ----- | ----- | ----- | ----- | ----- |
+| Bernal Torres, Carlos Alberto | @CharlesBernal-Hub&nbsp; | C | C | L |
+| Chui Kcomt, Luis Carlos | @OffEnergy | C | L | C |
+| Lacuta Lima, Alex Rodrigo&nbsp; | @alexrodrigoll | C | C | L |
+| Yi Torrejon, Ethan Raul&nbsp; | @MRYiEthan | L | C | C |
+| Huayra Moreyra, Jose Maria&nbsp; | @TheJos9 | L | C | C |
+
+#### **5.2.1.3. Sprint Backlog 1**
+
+A continuación, se presenta la descomposición de las User Stories seleccionadas en Work-Items asignables, los cuales fueron gestionados a través de nuestro tablero Kanban en Trello.
+
+| Sprint \# | Sprint 1 |  |  |  |  |  |
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| **User Story** |  | **Work-Item/Task** |  |  |  |  |
+| **Story Id** | **Story Title** | **Task Id** | **Task Title** | **Task Description** | **Estimation (Hours)** | **Assigned To** |
+| US01 | Presentación del Modelo de Negocio (Landing Page) | T01.1 | Diseñar Wireframes LP | Crear wireframes para Desktop y Mobile en Figma | 3 | Huayra Moreyra, Jose Maria&nbsp; |
+| US01 | Presentación del Modelo de Negocio (Landing Page) | T01.2 | Maquetar HTML5/CSS3 | Codificar la estructura semántica y estilos base responsivos. | 5 | Yi Torrejon, Ethan Raul&nbsp; |
+| US01 | Presentación del Modelo de Negocio (Landing Page) | T01.3 | Optimización SEO y ARIA | Implementar Meta tags y atributos de accesibilidad. | 2 | Bernal Torres, Carlos |
+| TSK01 | Configuración de Repositorios (Technical Task) | T00.1 | Set up GitHub Orgs | Crear repositorios, configurar protección de rama `main` y GitFlow. | 2 | Chui Kcomt, Luis |
+| US08 | Estructura del Informe de Proyecto | T08.1 | Redacción Cap. I y II | Documentar Startup Profile, Lean UX y Entrevistas en Markdown. | 4 | Lacuta Lima, Alex Rodrigo&nbsp; |
+
+#### **5.2.1.4. Development Evidence for Sprint Review**
+
+Durante este Sprint, el equipo se enfocó en el desarrollo frontend del sitio web estático (Landing Page) y la configuración inicial de repositorios. A continuación, se presenta la tabla de evidencias de los commits más relevantes integrados en la rama principal.
+
+| Repository | Branch | Commit Id | Commit Message | Commit Message Body | Commited on (Date) |
+| ----- | ----- | ----- | ----- | ----- | ----- |
+| iainnovation/aitodu-landing | feature/hero-section | `a1b2c3d` | feat: implement hero section and responsive navbar | Agregada estructura semántica y estilos B2B base. Configurado menú móvil. | 2026-09-04 |
+| iainnovation/aitodu-landing | feature/seo-accessibility | `f8e7d6c` | fix: add ARIA tags and SEO meta descriptions | Resueltos issues de accesibilidad para lectores de pantalla en botones de CTA. | 2026-09-05 |
+| iainnovation/aitodu-backend | chore/initial-setup | `b4c5d6e` | chore: init spring boot project structure | Configuración base del pom.xml y estructura de carpetas DDD. | 2026-09-06 |
+
+*(Nota: En el informe final se adjuntarán capturas de pantalla adicionales del historial de GitHub demostrando el uso de Conventional Commits por parte de todo el equipo).*
+
+#### **5.2.1.5. Execution Evidence for Sprint Review**
+
+En este primer Sprint, hemos alcanzado una versión completamente funcional del Landing Page de AI-ToDu.
+
+* **Logros:** El sitio presenta nuestra propuesta de valor B2B, los beneficios del ecosistema logístico y las soluciones divididas por segmentos (Dueños vs. Operarios).
+* **Responsividad:** La interfaz se adapta correctamente a dispositivos móviles, tablets y desktop.
+* **Evidencias:** `[Insertar captura de pantalla de la sección Hero en Desktop]` y `[Insertar captura de pantalla de la sección Soluciones en Mobile]`.
+* **Video:** El flujo de navegación del Landing Page se encuentra documentado en el video de este Sprint: `[Insertar URL del video de navegación en Microsoft Stream]`.
+
+#### **5.2.1.6. Services Documentation Evidence for Sprint Review**
+
+Dado que el objetivo principal del Sprint 1 fue la presentación del modelo de negocio (Landing Page), el desarrollo de Web Services estuvo en fase de *scaffolding* (configuración inicial). Sin embargo, se configuró Swagger (OpenAPI) y se documentó el endpoint inicial de verificación de estado (Health Check) para sentar las bases de los siguientes sprints.
+
+| Endpoint | Verbo HTTP | Acciones Implementadas | URL de Documentación (Swagger) |
+| ----- | ----- | ----- | ----- |
+| `/api/v1/health` | GET | Retorna el estado de disponibilidad del servidor y conexión a base de datos. Sin parámetros requeridos. | `http://localhost:8080/swagger-ui.html` (Local) |
+
+#### **5.2.1.7. Software Deployment Evidence for Sprint Review**
+
+El despliegue de nuestro Landing Page se realizó utilizando **Vercel**, conectando directamente nuestro repositorio principal de GitHub (`aitodu-landing`).
+
+* **Proceso:** Se configuró la rama `main` como rama de producción. Cada vez que se aprueba un *Pull Request* hacia `main`, Vercel ejecuta un *build* automático y publica los cambios.
+* **Evidencias:** `[Insertar captura de pantalla del Dashboard de Vercel mostrando el status "Ready" y el dominio asignado]`.
+
+#### **5.2.1.8. Team Collaboration Insights during Sprint**
+
+Durante este Sprint, el equipo utilizó GitHub para gestionar el código bajo el flujo GitFlow. Cada desarrollador creó ramas de tipo `feature/` para sus asignaciones. `[Insertar capturas del panel "Insights/Contributors" de GitHub demostrando la gráfica de commits del equipo]`.
+
+**Integración de Inteligencia Artificial como Pair Programmer** Para cumplir con los estándares ágiles de la industria y acelerar el ciclo de desarrollo en este Sprint, el equipo integró herramientas de Inteligencia Artificial Generativa (Gemini) en el flujo de trabajo colaborativo:
+
+* **Diseño de Arquitectura y Tipado Estricto:** La IA no reemplazó la lógica de ingeniería humana, sino que actuó como asesor. Utilizamos ingeniería de prompts para generar la estructura de los Modelos de Dominio iniciales (Interfaces y Enums), asegurando un tipado fuerte y validando nuestras decisiones sobre el uso de *Lazy Loading* y *Feature Modules*.
+* **Documentación Automatizada:** La redacción técnica y el formato Markdown del propio informe fue co-creado con IA, permitiendo al equipo humano enfocarse en la lógica de negocio y las decisiones arquitectónicas mientras el modelo de lenguaje aplicaba los estándares de redacción corporativa.
